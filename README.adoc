@@ -1,20 +1,20 @@
-= Exercices
+= Exercice : Manipulation de collections
 
 [IMPORTANT]
 ====
-Dans ces exercices, vous respecterez les contraintes suivantes:
+Dans cet exercice, vous respecterez les contraintes suivantes:
 
 * Vous utiliserez `git` en effectuant des commits réguliers comportant des messages informatifs.
 * Le _build_ sera assuré par Maven et plus précisément Maven wrapper (déjà intégré dans le projet).
 Aucune manipulation en dehors de Maven ne devra être nécessaire.
+* La version de Java à utiliser est la version 17.
 * Le _build_ devra intégrer `checkstyle` pour la vérification des règles de codages Google.
 Le projet devra donc les respecter.
-* Des tests unitaire JUnit 4 devront être disponibles pour la plupart des méthodes développées.
-* Chaque exercice devra se trouver dans un _package_ différent.
+`checkstyle` devra être exécuté automatiquement durant la phase `validate` du cycle de vie par défaut.
+* Des tests unitaires JUnit 4 (version _4.13.2_) devront être disponibles pour la plupart des méthodes développées.
 * Les fonctionnalités du langage Java devront être utilisées au mieux (exceptions, librairie de collections, I/O, ...).
 ====
 
-== Utilisation des collections
 L'objet de cet exercice est de simuler l'interrogation d'un DNS (_Domain Name Server_).
 Un DNS convertit une adresse IP (`192.168.0.1` par exemple) en un nom qualifié de machine (`machine.domaine.local` par exemple) et inversement.
 Un nom qualifié comporte le nom de la machine (avant le premier `'.'`) et un nom de domaine (après le premier `'.'`).
@@ -22,12 +22,39 @@ Un nom qualifié comporte le nom de la machine (avant le premier `'.'`) et un no
 L'interface proposera une ligne de commande à partir de laquelle les commandes suivantes devront être interprétées:
 
 * `nom.qualifié.machine` : l'adresse IP de la machine est affichée;
++
+.par exemple
+....
+> www.uvsq.fr
+193.51.31.90
+....
 * `adr.es.se.ip` : le nom qualifié de cette machine est affiché;
++
+.par exemple
+....
+> 193.51.31.90
+www.uvsq.fr
+....
 * `ls [-a]` _domaine_ : la liste des machines du domaine _domaine_ sera affichée triée selon le nom des machines ou selon les adresses IP (si `-a` est présent).
++
+.par exemple
+....
+> ls uvsq.fr
+ecampus poste www
+....
+* `add adr.es.se.ip nom.qualifié.machine` : ajoute une adresse IP associée à un nom de machine. Si l'adresse ou le nom de machine existe déjà, un message d'erreur est affiché.
++
+.par exemple
+....
+> add 193.51.25.90 www.uvsq.fr
+ERREUR : Le nom de machine existe déjà !
+....
 
 [IMPORTANT]
 ====
 * La base de données du serveur sera conservée dans un fichier texte (une ligne par machine au format "`un_nom_de_machine une.adresse.IP`") chargé au lancement du programme.
+* En cas d'ajout d'une machine par la commande `add`, le fichier texte doit être mis à jour
+* Pour lire et écrire le fichier texte, vous pouvez utiliser https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Files.html#readAllLines(java.nio.file.Path)[java.nio.file.Files.readAllLines] et https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Files.html#write(java.nio.file.Path,java.lang.Iterable,java.nio.file.OpenOption...)[java.nio.file.Files.write].
 * Le nom du fichier devra être stocké dans un fichier de propriétés (cf. http://docs.oracle.com/javase/tutorial/essential/environment/properties.html[Tutoriel sur les propriétés]).
 ====
 
@@ -43,37 +70,3 @@ Cette classe fournira une méthode `nextCommande` qui analysera le texte saisi p
 ** créer une classe implémentant cette interface pour chaque action (rechercher une IP, rechercher un nom, rechercher les machines d'un domaine, quitter l'application).
 . Réaliser la classe principale `DnsApp`.
 La méthode `run` de cette classe interagira avec l'interface utilisateur pour récupérer la prochaine commande, l'exécutera puis affichera la résultat.
-
-== Logiciel de "dessin"
-Le but de cet exercice est de réaliser un logiciel de dessin 2D.
-On se limitera ici à un affichage textuel, i.e. seule une description des figures sera affichée.
-
-Le logiciel devra offrir les fonctionnalités suivantes:
-
-* manipulation (affichage et déplacement) des formes comme des rectangles et des cercles,
-* regroupement d'objets afin de leur faire subir un traitement global
-(par exemple, déplacer ensemble un cercle et un rectangle),
-* sauvegarde/chargement d'un dessin à l'aide de la sérialisation.
-
-. Proposer une hiérarchie de classe modélisant ce problème et un découpage en module du logiciel
-. Réaliser une implémentation du logiciel de dessin
-
-== Requêtes en utilisant les `streams`
-Le but de cette exercice est d'exprimer un ensemble de requêtes en utilisant la bibliothèque `stream`.
-
-Un employé possède les attributs suivants :
-nom (`String`), age (`int`), sexe (`enum`), salaire (`BigDecimal`),
-date d'embauche (`LocalDate`) et service de rattachement (`Service`).
-Un service comporte un nom (`String`) et une adresse (`String`).
-
-. Implémentez la classe `Employe` et l'énumération `Service`
-. Créez un jeu de données de test
-. Implémentez les requêtes suivantes (faites afficher le résultat)
-.. les employés (avec toutes leurs caractéristiques)
-.. les employés de moins de 30 ans
-.. le nom des hommes
-.. le nom et le salaire trié par salaire décroissant
-.. la moyenne des salaires
-.. les employés regroupés selon leur sexe
-.. la moyenne des salaires par sexe
-.. le nom et la date d'embauche par services
