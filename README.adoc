@@ -40,12 +40,20 @@ www.uvsq.fr
 .par exemple
 ....
 > ls uvsq.fr
-ecampus poste www
+193.51.25.12 ecampus.uvsq.fr
+193.51.31.154 poste.uvsq.fr
+193.51.31.90 www.uvsq.fr
 ....
 * `add adr.es.se.ip nom.qualifié.machine` : ajoute une adresse IP associée à un nom de machine. Si l'adresse ou le nom de machine existe déjà, un message d'erreur est affiché.
 +
 .par exemple
 ....
+> add 193.51.25.24 pikachu.uvsq.fr
+> ls -a uvsq.fr
+193.51.25.12 ecampus.uvsq.fr
+193.51.25.24 pikachu.uvsq.fr
+193.51.31.90 www.uvsq.fr
+193.51.31.154 poste.uvsq.fr
 > add 193.51.25.90 www.uvsq.fr
 ERREUR : Le nom de machine existe déjà !
 ....
@@ -62,11 +70,13 @@ ERREUR : Le nom de machine existe déjà !
 . Réaliser la classe `Dns` qui proposera les opérations suivantes:
 ** un constructeur qui chargera la base de données,
 ** deux méthodes `getItem` qui retourneront une instance de `DnsItem` soit à partir d'une adresse IP, soit à partir d'un nom de machine,
-** une méthode `getItems` qui retournera une liste d'items à partir d'un nom de domaine.
+** une méthode `getItems` qui retournera une liste d'items à partir d'un nom de domaine,
+** une méthode `addItem` qui prend une adresse et un nom de machine pour les ajouter à la base de données.
+Une exception est levée en cas d'erreur.
 . Réaliser la classe `DnsTUI` qui se chargera des interactions avec l'utilisateur.
 Cette classe fournira une méthode `nextCommande` qui analysera le texte saisi par l'utilisateur et retournera un objet implémentant l'interface `Commande` (cf. question suivante) et une méthode `affiche` qui affichera un résultat.
 . Les commandes DNS seront implémentées à l'aide du modèle de conception http://en.wikipedia.org/wiki/Command_pattern[Commande].
 ** créer l'interface `Commande` comportant une seule méthode `execute`,
-** créer une classe implémentant cette interface pour chaque action (rechercher une IP, rechercher un nom, rechercher les machines d'un domaine, quitter l'application).
+** créer une classe implémentant cette interface pour chaque action (rechercher une IP, rechercher un nom, rechercher les machines d'un domaine, ajouter un item dans la BD, quitter l'application).
 . Réaliser la classe principale `DnsApp`.
 La méthode `run` de cette classe interagira avec l'interface utilisateur pour récupérer la prochaine commande, l'exécutera puis affichera la résultat.
